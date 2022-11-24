@@ -9,6 +9,8 @@ For full details on tools, please refer to Wiki section.
 # Installation
 Being a command line or terminal level tool, winpower can be installed in many ways. However, we are presenting our recommened way as it provides maximum accessiblilty to tool set.
 
+Watch this youtube video for help. https://youtu.be/MtXEIW4fKiE
+
 1. Download the repository from the github & extract the zip file.
 2. Place the winpower folder inside Program Files folder.
 3. Add the folder path to the system level environment.
