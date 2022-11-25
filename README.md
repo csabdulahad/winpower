@@ -4,7 +4,7 @@ A bundle of cmd/powershell tools, that powers you.
 This repository hosts a collection of cmd/powershell tools which can greatly simplies you day to day tasks in CMD or Powershell.
 
 # How to Use
-For full details on tools, please refer to Wiki section.
+For full details on tools, please refer to Wiki section. https://github.com/csabdulahad/winpower/wiki
 
 # Installation
 Being a command line or terminal level tool, winpower can be installed in many ways. However, we are presenting our recommened way as it provides maximum accessiblilty to tool set.
