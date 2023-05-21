@@ -1,0 +1,15 @@
+----------------------------------------------------------------------
+Setting up WinPower                         
+----------------------------------------------------------------------
+
+Congratulation!
+
+WinPower has been successfully installed on the local directory. We're
+almost there.
+
+Next, it will ask for finalizing WinPower setup.
+Click continue/yes.
+
+Regards
+Abdul Ahad
+http://abdulahad.net

@@ -1,0 +1,30 @@
+----------------------------------------------------------------------
+WinPower Installation                        
+----------------------------------------------------------------------
+
+WinPower stands for Windows Power is a CLI software offering many
+utility commands which help a typical Windows user to become more
+productive.
+
+Warning: You are about to give consent to WinPower to run and execute
+after installation the following:
+
+1. Create a self-signing certificate
+2. Sign all the winpower ps scripts
+3. Restore the execution policy security
+4. Add WinPower to System-Level environment variable
+
+Disclaimer: In no event will we be liable for any loss or damage,
+including without limitation, indirect or consequential loss or damage,
+or any loss or damage whatsoever arising from the use of this notice.
+
+*************************************************************
+* IF YOU ARE AGREE TO THE ABOVE AGREEMENT, ONLY THEN PROCEED.
+*************************************************************
+
+Please visit https://abdulahad.net/winpower for information about
+function, features and capabilities of WinPower.
+
+Regards
+Abdul Ahad
+http://abdulahad.net
