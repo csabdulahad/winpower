@@ -3,7 +3,7 @@ function SetExePoli([string] $Policy = 'RemoteSigned') {
 }
 
 # WinPower Version
-$winVer = '13.5.12'
+$winVer = '1.0.0'
 
 # Get the last execution policy
 $lastExePolicy = $args[1];
