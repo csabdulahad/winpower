@@ -8,7 +8,7 @@ productivity.
 # How to Install
 Being a command line or terminal level tool, winpower can be installed in many ways. However, we recommend
 using executable file which makes the installation process very simple & error free.
-Just download the latest version from here: [WinPower](https://github.com/csabdulahad/winpower/download).
+Just download the latest version from here: [WinPower](https://github.com/csabdulahad/winpower/tree/main/download).
 
 # Available Commands/Functions
 For a complete available commands & argument lists, please refer to [Wiki](https://github.com/csabdulahad/winpower/wiki) page. 
