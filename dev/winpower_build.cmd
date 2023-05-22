@@ -23,10 +23,13 @@ if "%version%"=="" (
     ISCC.exe /D"version=%version%" "winpower.iss"
 )
 
+REM Remove both the zip and exe WinPower from the download folder
+powershell -Command "Set-Location 'c:/winpower_dev/download/'; Remove-Item -Force -Path 'WinPower.exe'; Remove-Item -Force -Path 'WinPower.zip'"
+
 REM Make a copy of the winpower exe file and place it on download folder for download
 set "fileName=WinPower_%version%.exe"
-powershell -Command "Set-Location 'c:/winpower_dev'; Copy-Item -Force -Path 'download/installer/%fileName%' -Destination 'download/WinPower.exe';"
+powershell -Command "Set-Location 'c:/winpower_dev'; Copy-Item -Path 'download/installer/%fileName%' -Destination 'download/WinPower.exe';"
 
 REM Make a zip file for the winpower source
 set "zipName=WinPower_%version%.zip"
-powershell -Command "Set-Location 'c:/winpower_dev'; Compress-Archive -Path 'winpower' -Destination 'download/zip/%zipName%'; Copy-Item -Path 'download/zip/%zipName%' -Destination 'download/WinPower.zip'"
+powershell -Command "Set-Location 'c:/winpower_dev'; Compress-Archive -Update -Path 'winpower' -Destination 'download/zip/%zipName%'; Copy-Item -Force -Path 'download/zip/%zipName%' -Destination 'download/WinPower.zip'"

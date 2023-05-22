@@ -6,4 +6,4 @@ set "argPath=%~1"
 if "%argPath%"=="" set "argPath=%CD%"
 
 
-powershell -Command "Start-Process powershell.exe -Verb RunAs -ArgumentList '-File \"c:/winpower/ps/piyon.ps1\" %argPath%'"
+powershell -Command "Start-Process powershell.exe -Verb RunAs -ArgumentList '-File \"c:/winpower/ps/piyon.ps1\" \"%argPath%\"'"
