@@ -1,6 +1,6 @@
 
 # WinPower Version
-$winVer = '2.0.0'
+$winVer = '2.1.0'
 
 function winpower {
     Write-Host -ForegroundColor Green "
