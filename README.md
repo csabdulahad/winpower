@@ -37,7 +37,7 @@ wp -v
 ```
 You should get output like the following.
 
-![WinPower Version Window](https://raw.githubusercontent.com/csabdulahad/winpower/main/dev/build/asset/window_version.png)
+![WinPower Version Window](https://raw.githubusercontent.com/csabdulahad/winpower/main/dev/build/asset/winpower_version.png)
 
 # Available Commands/Functions
 For a complete available commands & argument lists, please refer to [Wiki](https://github.com/csabdulahad/winpower/wiki) page. 
