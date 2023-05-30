@@ -19,15 +19,28 @@ try {
         msg   = 'The path to be opened in the explorer.'
         def   = $env:origin
     });
+
+    $pm.cmd('me');
+    $pm.cmd('d');
+    $pm.cmd('dl');
+
     $pm.validate($args);
 
-    if ($pm.hit('path')) {
-        $path = $pm.hitOrDef('path');
+    if ($pm.hitCmd('me')) {
+        $path = $env:USERPROFILE;
+    } elseif ($pm.hitCmd('d')) {
+        $path = [System.Environment]::GetFolderPath('Desktop');
+    } elseif ($pm.hitCmd('dl')) {
+        $path = [System.Environment]::GetFolderPath('User') + '\Downloads';
     } else {
-        # Get the path from the clipboard
-        $path = Get-Clipboard;
-        if ($null -eq $path) {
-            $path = $env:origin;
+        if ($pm.hit('path')) {
+            $path = $pm.hitOrDef('path');
+        } else {
+            # Get the path from the clipboard
+            $path = Get-Clipboard;
+            if ($null -eq $path) {
+                $path = $env:origin;
+            }
         }
     }
 
