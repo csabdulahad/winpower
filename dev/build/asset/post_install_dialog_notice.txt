@@ -1,5 +1,5 @@
 ----------------------------------------------------------------------
-Setting up WinPower                         
+                         Setting up WinPower
 ----------------------------------------------------------------------
 
 Congratulation!
@@ -9,7 +9,3 @@ almost there.
 
 Next, it will ask for finalizing WinPower setup.
 Click continue/yes.
-
-Regards
-Abdul Ahad
-http://abdulahad.net

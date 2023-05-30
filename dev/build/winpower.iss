@@ -46,7 +46,8 @@ begin
 
   if CurPage = wpFinished then
   begin
-    if ShellExec('', ExpandConstant('{cmd}'), '/C C:\winpower\setup.cmd y', '', SW_SHOW, ewWaitUntilTerminated, ResultCode) then
+    Exec('powershell.exe', '-Command Set-ExecutionPolicy ByPass CurrentUser -Force', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
+    if ShellExec('', ExpandConstant('{cmd}'), '/C C:\winpower\cmd\wp.cmd wp_setup y', '', SW_SHOW, ewWaitUntilTerminated, ResultCode) then
     begin
       if ResultCode <> 0 then
       begin

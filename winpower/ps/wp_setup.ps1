@@ -1,25 +1,32 @@
-function SetExePoli([string] $Policy = 'RemoteSigned') {
-    Set-ExecutionPolicy -ExecutionPolicy $Policy -Scope CurrentUser;
+function SetExePoli([string] $p = 'RemoteSigned') {
+    Set-ExecutionPolicy $p CurrentUser;
 }
-
-# WinPower Version
-$winVer = '1.0.1'
 
 # Get the last execution policy
 $lastExePolicy = $args[1];
 
 try {
-
     Write-Host "
-                 __    __ _         ___                       
-                / / /\ \ (_)_ __   / _ \_____      _____ _ __ 
+                 __    __ _         ___
+                / / /\ \ (_)_ __   / _ \_____      _____ _ __
                 \ \/  \/ / | '_ \ / /_)/ _ \ \ /\ / / _ \ '__|
-                 \  /\  /| | | | / ___/ (_) \ V  V /  __/ |   
+                 \  /\  /| | | | / ___/ (_) \ V  V /  __/ |
                   \/  \/ |_|_| |_\/    \___/ \_/\_/ \___|_|
     ----------------------------------------------------------------------
     |                       WinPower Installation                        |
     ----------------------------------------------------------------------
+    ";
 
+    # Validate whether the WinPower folder installation is at right location
+    if (-Not(Test-Path -Path "c:/winpower")) { Throw 'Make sure the winpower folder is located at: "c:/winpower"'; }
+
+    # set winpower folder location
+    Set-Location -Path "c:/winpower";
+
+    # Execute the helper functions
+    . "lib/func";
+
+    Write-Host "
     Welcome to WinPower $winVer!
 
     Warning: You are about to grant WinPower permissions to run and execute
@@ -35,25 +42,15 @@ try {
     or any loss or damage whatsoever arising from the use of this notice.
     ";
 
-    
-    # Validate whether the WinPower folder installation is at right location
-    if (-Not(Test-Path -Path "c:/winpower")) { Throw 'Make sure the winpower folder is located at: "c:/winpower"'; }
-    Set-Location -Path "c:/winpower";
-
-
-    # Execute the helper functions
-    . "lib/func.ps1";
-
 
     # Check if we have last execution policy
     if ($args.Length -lt 1) {
         Throw "`n    &#10060; No direct access allowed to WinPower setup.";
     }
 
-
     # Check for installation agreement via exe installer
     $consent = $args[0];
-    if ($consent -eq 'n') {
+    if ($consent -ine 'y') {
         # Get the consent
         $consent = Read-Host("    Do you agree? (y/n)");
         if ($consent.ToLower() -ne 'y') {
@@ -80,12 +77,12 @@ try {
     HmWrite -Msg "`n    Singing winpower scripts...";
     $files = Get-ChildItem -Path "ps" -File;
     foreach ($file in $files) {
-        if ($file.Name -eq 'setup.ps1') { continue; }
+        if ($file.Name -eq 'wp_setup.ps1') { continue; }
         [void](Set-AuthenticodeSignature "ps/$file" $cert);
         HmWrite -Msg "    &#9989; $file";
     }
 
-    
+
     # Restore the execution policy to RemoteSigned
     HmWrite -Msg "`n    Restoring the execution policy....";
     SetExePoli;
@@ -103,7 +100,7 @@ try {
 
 } catch {
     # Set back the last one as we must!
-    SetExePoli -Policy $lastExePolicy;
+    SetExePoli $lastExePolicy;
 
     if (Test-Path function:\Err) {
         Err;

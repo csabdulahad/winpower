@@ -1,13 +1,22 @@
+Set-Location 'c:/winpower';
+
 # Include the library functions
-. "c:/winpower/lib/func.ps1";
+. "lib/func";
+. "lib/Paramize";
 
 try {
 
-    $path = $args[0];
-    if ($null -eq $path) {
-        $path = Get-Location;
-    }
+    $pm = [Paramize]::new();
+    $pm.add(@{
+        lName = 'Path'
+        sName = 'P'
+        msg   = 'It must be the path you want to add to the Environment Variable (EV).'
+        def   = $env:origin
+    });
+    $pm.validate($args);
 
+    $path = $pm.hitOrDef('path');
+    RunAsAdmin 'piyon' $path;
 
     # Append the new path to the existing one & then add to the env. variables
     $oldPath = [Environment]::GetEnvironmentVariable("Path", "Machine");
@@ -16,5 +25,4 @@ try {
 
 } catch {
     Err;
-    PressToExit;
 }

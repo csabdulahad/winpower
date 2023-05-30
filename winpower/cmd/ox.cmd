@@ -1,2 +1,4 @@
+
 @echo off
-powershell -File "c:\winpower\ps\ox.ps1"
+set "a=%*"
+powershell -File "c:/winpower/ps/wp.ps1" "ox" %a%
