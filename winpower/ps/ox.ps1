@@ -1,18 +1,34 @@
+Set-Location 'c:/winpower';
+
 # Include the library functions
-. "c:/winpower/lib/func.ps1";
+. "lib/func";
+. "lib/Paramize";
 
 function OpenPWD {
     $clear = Read-Host "Open PWD instad? (y/n)";
-    if ($clear -ieq 'y') { return Get-Location; }
+    if ($clear -ieq 'y') { return $env:origin; }
     else { Throw ""; }
 }
 
 try {
 
-    # Get the path from the clipboard
-    $path = Get-Clipboard;
-    if ($null -eq $path) {
-        $path = Get-Location;
+    $pm = [Paramize]::new();
+    $pm.add(@{
+        lName = 'path'
+        sName = 'p'
+        msg   = 'The path to be opened in the explorer.'
+        def   = $env:origin
+    });
+    $pm.validate($args);
+
+    if ($pm.hit('path')) {
+        $path = $pm.hitOrDef('path');
+    } else {
+        # Get the path from the clipboard
+        $path = Get-Clipboard;
+        if ($null -eq $path) {
+            $path = $env:origin;
+        }
     }
 
 

@@ -1,9 +1,9 @@
+@echo off
+
 REM This scrips build the WinPower_X.X.X.exe file under download
 REM folder. It first asks for the version number then modifies
 REM the in-file WinPower version and then invokes ISCC software
 REM to build
-
-@echo off
 
 cd "c:/winpower_dev/dev/build"
 
