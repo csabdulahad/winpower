@@ -6,6 +6,17 @@ Set-Location 'c:/winpower';
 . 'lib/Paramize';
 
 $command = @{
+    wdoc = @(
+    "The doctor who validates WP installation and provides troubleshoot. When
+there is any problem with WP installation, run this command to fix.",
+
+    "Command Syntax
+    wdoc",
+
+    $null,
+    $null
+    )
+
     ip = @(
     "Displays local or public ip address to the console. IP address can be
 copied to the clipboard by using option -c. It uses ipify free web service
@@ -13,7 +24,7 @@ to discover the public IP address. For local IP, it just tries to calculate
 the IP by searching for WiFi profile through registered networks of the
 computer.",
 
-    "Command Syntax
+    "Command Syntax:
     ip
     ip [type]
     ip [type] [copy]",

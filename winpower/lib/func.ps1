@@ -1,6 +1,6 @@
 
 # WinPower Version
-$winVer = '4.0.0'
+$winVer = '4.1.0'
 
 function winpower {
     HmWrite "

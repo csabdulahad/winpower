@@ -13,7 +13,7 @@ try {
                  \  /\  /| | | | / ___/ (_) \ V  V /  __/ |
                   \/  \/ |_|_| |_\/    \___/ \_/\_/ \___|_|
     ----------------------------------------------------------------------
-    |                       WinPower Installation                        |
+    |                        WinPower Installation                       |
     ----------------------------------------------------------------------
     ";
 
@@ -25,6 +25,9 @@ try {
 
     # Execute the helper functions
     . "lib/func";
+
+    # Set console title
+    (Get-Host).UI.RawUI.WindowTitle = "WinPower $winVer";
 
     Write-Host "
     Welcome to WinPower $winVer!
