@@ -14,4 +14,4 @@ if %errorlevel% equ 1 (
 )
 
 set "a=%*"
-powershell -File "c:/winpower/ps/wp.ps1" "piyon" %a%
+powershell -File "c:/winpower/ps/wp.ps1" "whelp" %a%

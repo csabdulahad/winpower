@@ -40,7 +40,8 @@ You should get output like the following.
 ![WinPower Version Window](https://raw.githubusercontent.com/csabdulahad/winpower/main/dev/build/asset/winpower_version.png)
 
 # Available Commands/Functions
-For a complete available commands & argument lists, please refer to [Wiki](https://github.com/csabdulahad/winpower/wiki) page. 
+For a complete available commands & argument lists, you can run the **"whelp"** command with **-list** flag as shown below. 
+![WinPower whelp](https://raw.githubusercontent.com/csabdulahad/winpower/main/dev/build/asset/winpower_whelp.png)
 
 # Donation/Support
 If you find this project helpful then why don't you buy the developer a cup of tea? Any amount of donation is appreciated. Please follow the link to donate by using PayPal.

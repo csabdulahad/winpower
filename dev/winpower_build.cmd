@@ -16,7 +16,7 @@ if "%version%"=="" (
     goto input
 ) else (
     REM First update the in-file WinPower version
-    powershell -File update_setup_file_ver.ps1 %version%
+    powershell -File build_winpower.ps1 %version%
 
     REM Start the build process with specified version
     REM add the following at the end of the command to suppress the log: '> NUL'

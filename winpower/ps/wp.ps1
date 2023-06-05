@@ -18,7 +18,6 @@ try {
     $pm.disablePosCheck();
     $pm.cmd('v');
     $pm.cmd('i');
-    $pm.cmd('h');
     $pm.validate($args);
 
     # version command
@@ -31,16 +30,10 @@ try {
         Exit;
     }
 
-    # help command
-    if ($pm.hitCmd('h')) {
-        Write-Host -ForegroundColor Yellow "Checkout the offical website for help.`nYes, more help is on the way...";
-        Exit;
-    }
-
     # make sure we have got known command to do
     $fileName = $args[0];
     if (-Not(Test-Path "ps/$fileName.ps1")) {
-        Throw "Unknown command`nType ""wp -h"" for help";
+        Throw "Unknown command`nType ""whelp -list"" for more help";
     }
 
     # now load that file with the argument passed-in

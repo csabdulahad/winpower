@@ -62,7 +62,7 @@ try {
 
 
     # Create a certificate
-    HmWrite -Msg "`n    Creating self-signing certificate..."
+    HmWrite "`n    Creating self-signing certificate..."
     $params = @{
         Subject = 'CN=WinPower Code Signing Cert'
         Type = 'CodeSigning'
@@ -70,33 +70,33 @@ try {
         HashAlgorithm = 'sha256'
     }
     $cert = New-SelfSignedCertificate @params;
-    HmWrite -Msg "    &#9989; Certificate created.";
+    HmWrite "    &#9989; Certificate created.";
 
 
     # Assign the certificate to the winpower scripts
-    HmWrite -Msg "`n    Singing winpower scripts...";
+    HmWrite "`n    Singing winpower scripts...";
     $files = Get-ChildItem -Path "ps" -File;
     foreach ($file in $files) {
         if ($file.Name -eq 'wp_setup.ps1') { continue; }
         [void](Set-AuthenticodeSignature "ps/$file" $cert);
-        HmWrite -Msg "    &#9989; $file";
+        HmWrite "    &#9989; $file";
     }
 
 
     # Restore the execution policy to RemoteSigned
-    HmWrite -Msg "`n    Restoring the execution policy....";
+    HmWrite "`n    Restoring the execution policy....";
     SetExePoli;
-    HmWrite -Msg "    &#9989; Execution policy restored";
+    HmWrite "    &#9989; Execution policy restored";
 
 
     # Add WinPower to the system-level environment variable
-    HmWrite -Msg "`n    Adding WinPower to System-Level environment variable....";
+    HmWrite "`n    Adding WinPower to System-Level environment variable....";
     & "ps/piyon.ps1" "c:/winpower/cmd";
-    HmWrite -Msg "    &#9989; WinPower added to env. variable";
+    HmWrite "    &#9989; WinPower added to env. variable";
 
 
     # Congratulate the user
-    HmWrite -Msg "`n`n    &#9889;Congratulation!`n    WinPower setup has been completed successfully.`n"
+    HmWrite "`n`n    &#9889;Congratulation!`n    WinPower setup has been completed successfully.`n"
 
 } catch {
     # Set back the last one as we must!

@@ -1,18 +1,25 @@
 
 # WinPower Version
-$winVer = '3.0.0'
+$winVer = '4.0.0'
 
 function winpower {
-    Write-Host -ForegroundColor Green "
+    HmWrite "
  __    __ _         ___
-/ / /\ \ (_)_ __   / _ \_____      _____ _ __
+/ / /\ \ (_)_ __   / _ \_____      _____ _ __ " Green $false;
+    HmWrite "&#x26A1;" Yellow $false;
+    HmWrite "
 \ \/  \/ / | '_ \ / /_)/ _ \ \ /\ / / _ \ '__|
  \  /\  /| | | | / ___/ (_) \ V  V /  __/ |
-  \/  \/ |_|_| |_\/    \___/ \_/\_/ \___|_|"  -NoNewline;
+  \/  \/ |_|_| |_\/    \___/ \_/\_/ \___|_|"  Green $false;
 
     Write-Host " v$winVer`n" -ForegroundColor Red;
+    Write-Host "Type ""whelp -list"" to learn about available WP commands.";
     Write-Host "Visit https://wp.rootdata21.com for information.`n";
     Exit;
+}
+
+function ucFirst([string]$str) {
+    return $str.Substring(0, 1).ToUpper() + $str.Substring(1);
 }
 
 function coalesce($val, $fuse) {
@@ -45,9 +52,13 @@ function Highlight {
 }
 
 function HmWrite {
-    param ([string] $Msg)
+    param ([string] $msg, [string]$color=((Get-Host).UI.RawUI.ForegroundColor), [boolean]$break=$true)
     $msg = [System.Net.WebUtility]::HtmlDecode($msg);
-    Write-Host $msg;
+    if ($break) {
+        Write-Host $msg -ForegroundColor $color;
+    } else {
+        Write-Host $msg -ForegroundColor $color -NoNewline;
+    }
 }
 
 function PressToExit {
