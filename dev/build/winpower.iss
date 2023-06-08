@@ -38,6 +38,17 @@ Source: "C:\winpower_dev\winpower\*"; DestDir: "{app}"; Flags: ignoreversion rec
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Code]
+procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);
+var
+  ResultCode: Integer;
+begin
+  if CurUninstallStep = usUninstall then
+  begin
+    ShellExec('', ExpandConstant('{cmd}'), '/C piyon -r "c:/winpower/cmd"', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
+    Exec('powershell.exe', '-Command Set-Location c:/winpower; . "lib/func.ps1"; removeWPPref', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
+  end;
+end;
+
 function NextButtonClick(CurPage: Integer): Boolean;
 var
   ResultCode: Integer;

@@ -2,6 +2,25 @@ function SetExePoli([string] $p = 'RemoteSigned') {
     Set-ExecutionPolicy $p CurrentUser;
 }
 
+function takePass() {
+    $pass = getPass "    Create password: ";
+    if ($null -eq $pass -or $pass -eq '') {
+        HmWrite "   &#10071; Can't create empty password`n" Yellow
+        takePass;
+        return;
+    }
+
+    if ($pass.Length -lt 4) {
+        HmWrite "   &#10071; Create a strong password`n" Yellow
+        takePass;
+        return;
+    }
+
+    savePref "pass" $pass $true;
+    HmWrite "    &#9989; Password has been created"
+    Write-Host "    Remember this password, otherwise you need to reinstall WinPower" -ForegroundColor Yellow;
+}
+
 # Get the last execution policy
 $lastExePolicy = $args[1];
 
@@ -39,6 +58,7 @@ try {
     2. Sign all the winpower ps scripts
     3. Restore the execution policy security
     4. Add WinPower to System-Level environment variable
+    5. Create WinPower access password
 
     Disclaimer: In no event will we be liable for any loss or damage,
     including without limitation, indirect or consequential loss or damage,
@@ -96,6 +116,15 @@ try {
     HmWrite "`n    Adding WinPower to System-Level environment variable....";
     & "ps/piyon.ps1" "c:/winpower/cmd";
     HmWrite "    &#9989; WinPower added to env. variable";
+
+
+    # Now ask for account password
+    HmWrite "`n    Securing winpower access...";
+    if ($null -eq (getPref 'pass')) {
+        takePass;
+    } else {
+        HmWrite "   &#10071; You've already set the password." Yellow;
+    }
 
 
     # Congratulate the user

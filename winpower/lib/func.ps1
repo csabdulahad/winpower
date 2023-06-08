@@ -1,6 +1,8 @@
 
 # WinPower Version
-$winVer = '4.1.0'
+$winVer = '5.0.0'
+
+$registryPath = 'HKCU:\Software\WinPower';
 
 function winpower {
     HmWrite "
@@ -16,6 +18,107 @@ function winpower {
     Write-Host "Type ""whelp -list"" to learn about available WP commands.";
     Write-Host "Visit https://wp.rootdata21.com for information.`n";
     Exit;
+}
+
+function savePref([string] $key, $val, [boolean]$secure=$false) {
+    # Create the registry key if it doesn't exist
+    if (!(Test-Path -Path $registryPath)) {
+        New-Item -Path $registryPath -Force | Out-Null
+    }
+
+    if ($secure) { $val = md5($val); }
+
+    # Set the value in the registry
+    Set-ItemProperty -Path $registryPath -Name $key -Value $val
+}
+
+function getPref([string] $key, $def = $null, $secure = $false) {
+
+    # Create the registry key if it doesn't exist
+    if (!(Test-Path -Path $registryPath)) { return $def; }
+
+    try {
+        $val = Get-ItemProperty -Path $registryPath -Name $key -ErrorAction SilentlyContinue
+    } catch {
+    }
+
+    if ($null -eq $val) { $val = $def; }
+
+    if ($secure) {
+        return md5($val.$($key));
+    }
+
+    return $val.$($key);
+}
+
+function removeWPPref() {
+    if (!(Test-Path $registryPath)) { return; }
+    Remove-Item -Path $registryPath;
+}
+
+function removePref([string]$key) {
+    if (!(Test-Path $registryPath)) { return; }
+
+    # Delete a registry value
+    Remove-ItemProperty -Path $registryPath -Name $key
+}
+
+function md5([string]$str) {
+    $md5 = New-Object -TypeName System.Security.Cryptography.MD5CryptoServiceProvider;
+    $hashBytes = [System.Text.Encoding]::UTF8.GetBytes($str);
+    $md5HashBytes = $md5.ComputeHash($hashBytes);
+    return [System.BitConverter]::ToString($md5HashBytes).Replace("-", "");
+}
+
+function matchPass([string]$pass) {
+
+    $inPref = getPref 'pass' $null;
+    if ($null -ieq $inPref) {
+        throw "&#10060; No password was created`nPlease reinstall WinPower";
+    }
+
+    $pass = md5 $pass;
+    return ($pass -eq $inPref);
+}
+
+function showWarn([string] $msg, [string]$before = '',[string] $icon = '&#9940;') {
+    $msg = "$before$icon $msg"
+    $msg = [System.Net.WebUtility]::HtmlDecode($msg);
+    Write-Host $msg -ForegroundColor Yellow;
+}
+
+function getPass([string]$msg='Enter winpower password: ') {
+    Write-Host $msg -NoNewline;
+
+    $password = ""
+    $consoleKeyInfo = $null
+
+    # Read each character until Enter is pressed
+    while (($consoleKeyInfo = [System.Console]::ReadKey($true)).Key -ne "Enter") {
+        if ($consoleKeyInfo.Key -eq "Backspace") {
+            if ($password.Length -gt 0) {
+                # Remove the last character from the password
+                $password = $password.Substring(0, $password.Length - 1)
+
+                # Move the cursor back by one character
+                [System.Console]::SetCursorPosition([System.Console]::CursorLeft - 1, [System.Console]::CursorTop)
+
+                # Replace the character with a space
+                Write-Host -NoNewline " "
+                [System.Console]::SetCursorPosition([System.Console]::CursorLeft - 1, [System.Console]::CursorTop)
+            }
+        } else {
+            # Add the character to the password
+            $password += $consoleKeyInfo.KeyChar
+
+            # Display an asterisk instead of the actual character
+            Write-Host -NoNewline "*" -ForegroundColor Cyan
+        }
+    }
+
+    # add line break
+    Write-Host "";
+    return $password;
 }
 
 function ucFirst([string]$str) {
@@ -63,7 +166,7 @@ function HmWrite {
 
 function PressToExit {
     Write-Output "    Press any key to exit...";
-    $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyUp");
+    $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown");
 }
 
 function escapeArgs($arg) {

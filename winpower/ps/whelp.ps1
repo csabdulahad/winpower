@@ -6,11 +6,46 @@ Set-Location 'c:/winpower';
 . 'lib/Paramize';
 
 $command = @{
+    winfi = @(
+    "Shows wifi profiles and their passwords. It is one of the critical options
+that WinPower provides. So it is password protected. It uses NETSH WLAN
+command behind the scene. It's name is mixture of two words: WinPower & Wifi."
+
+    "Command Syntax:
+    winfi
+    winfi [-list]
+    winfi [profile]
+    winfi [profile] [key]
+    winfi [profile] [key] [copy]",
+
+    "Flags:
+    -list
+    Lists the name of all available wifi profiles",
+
+    "Args:
+    #1 -profile or -p [optional]
+    Valid options are: *, ANY AVAILABLE PROFILE NAME.
+    When specified, it shows the key for the profile. When omitted, it
+    lists all the profiles. When key argument is set ""n"" (no), it
+    behaves flag -list.
+
+    #2 -key or -k [optional]
+    Valid options are: y, n.
+    When set to ""y"" (yes), the password is shown in clear text. Default
+    value is ""n"" (no). The password is shown in cryptic way.
+
+    #3 -copy or -c [optional]
+    Valid options are: y, n.
+    When it is set ""y"" (yes), the password is copied to the clipboard.
+    Default is ""n"" (no). This argument has no effect when -profile
+    argument is set to *."
+    )
+
     wdoc = @(
     "The doctor who validates WP installation and provides troubleshoot. When
 there is any problem with WP installation, run this command to fix.",
 
-    "Command Syntax
+    "Command Syntax:
     wdoc",
 
     $null,
@@ -46,7 +81,7 @@ computer.",
     "The main command of the WinPower(WP). All the commands go through this wp.
 If performs many checks, syntax validations, setting environment etc.",
 
-    "Command Syntax
+    "Command Syntax:
     wp
     wp [-i | -v]
     wp [args...]",
@@ -100,10 +135,15 @@ piyon takes the path and adds to the EV.",
 
     #command syntax
     "Command Sytax:
-    piyon [path]",
+    piyon [path]
+    piyon [-r] {path}",
 
     # flags
-    $null,
+    "Flags:
+    -r
+    Removes the specified path. The path comes after the flag -r
+    Path can't be empty/null
+    Example: piyon -r ""c:/a path to folder""",
 
     # args
     "Args:
