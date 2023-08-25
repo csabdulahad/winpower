@@ -128,7 +128,7 @@ class Paramize {
         return $this._cmdHit -eq $cmd;
     }
 
-    # returns the next valu in arguments if the specific cmd was hit
+    # returns the next value in arguments if the specific cmd was hit
     [object] hitCmdArg([string] $cmd) {
         if (-not $this.hitCmd($cmd)) { return $null; }
         return $this._argBuffer[1];

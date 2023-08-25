@@ -44,7 +44,7 @@ var
 begin
   if CurUninstallStep = usUninstall then
   begin
-    ShellExec('', ExpandConstant('{cmd}'), '/C piyon -r "c:/winpower/cmd"', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
+    ShellExec('', ExpandConstant('{cmd}'), '/C piyon -r "c:\winpower\cmd"', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
     Exec('powershell.exe', '-Command Set-Location c:/winpower; . "lib/func.ps1"; removeWPPref', '', SW_HIDE, ewWaitUntilTerminated, ResultCode);
   end;
 end;

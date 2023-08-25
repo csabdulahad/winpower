@@ -3,6 +3,7 @@ Set-Location 'c:/winpower';
 # Include the library functions
 . "lib/func";
 . "lib/Paramize";
+. "lib/input";
 
 function findIP([string] $type) {
 
@@ -55,6 +56,8 @@ try {
 
     $pm = [Paramize]::new();
 
+    $pm.cmd('get');
+
     $pm.add(@{
         lName = 'type'
         sName = 't'
@@ -68,6 +71,41 @@ try {
     });
 
     $pm.validate($args);
+
+    $ips = getPref 'cached_ip' $null;
+    if ($null -ne $ips) {
+        $ips = $ips -split ';';
+    }
+
+    if ($pm.hitCmd('get')) {
+
+        if ($null -eq $ips) {
+            Highlight 'No IP has been cached yet';
+            exit;
+        }
+
+        $howMany = $args[1];
+        if ($null -eq $howMany) {
+            $howMany = $ips.Length;
+        }
+
+        $howMany = castInt $howMany;
+        if ($null -eq $howMany) {
+            throw 'Arugment to -get flag must be of type of integer';
+        }
+
+        if ($howMany -gt ($ips.Length)) {
+            $howMany = $ips.Length;
+        }
+
+        Write-Host "Showing $($howMany) of $($ips.Length) IPs:";
+
+        for ($i = 0; $i -lt $howMany; $i++) {
+            Write-Host "$($ips[$i])";
+        }
+
+        exit;
+    }
 
     $type = $pm.hitOrDef('type');
     if (-not ($type.ToLower() -in 'public', 'local')) {
@@ -90,6 +128,30 @@ try {
     if ($copy -ieq 'y') {
         Set-Clipboard $ip;
         Write-Host 'IP was copied to the clipboard';
+    }
+
+    # catch the IP
+    $cached = getPref 'cached_ip' $null;
+
+    if ($type -eq 'public') {
+
+        if ($null -eq $cached) {
+            $cached = $ip;
+        } else {
+
+            # Make we are not re-caching the same IP
+            $lastIP = $ips[0];
+            if($lastIP -ne $ip) {
+                $cached = "$ip;$cached";
+            } else {
+                $cached = $null;
+            }
+
+        }
+
+        if ($null -ne $cached) {
+            savePref 'cached_ip' $cached;
+        }
     }
 
 } catch {

@@ -61,10 +61,15 @@ computer.",
 
     "Command Syntax:
     ip
+    ip -get
     ip [type]
     ip [type] [copy]",
 
-    $null,
+    "Flags:
+    -get
+    Fetches cached public IP histories. Number of IP to be fetched can be set as
+    argument to -get flag.
+    Example: ip -get 5",
 
     "Args:
     #1 -type or -t [Optional]
@@ -131,7 +136,10 @@ If performs many checks, syntax validations, setting environment etc.",
     #info
     "Adds a specified path to the system level environment variable (EV) ""Path"".
 This command was named piyon, a bangla word which means the bearer as
-piyon takes the path and adds to the EV.",
+piyon takes the path and adds to the EV.
+
+Forward slashes (/) in path are replaced with backslashes (\) before gets added.
+",
 
     #command syntax
     "Command Sytax:
@@ -140,10 +148,24 @@ piyon takes the path and adds to the EV.",
 
     # flags
     "Flags:
+    -list
+    Shows the number of paths in the EV and lists them in order as they were added.
+    Example: piyon -list
+
     -r
     Removes the specified path. The path comes after the flag -r
     Path can't be empty/null
-    Example: piyon -r ""c:/a path to folder""",
+    Example: piyon -r ""c:/a path to folder""
+
+    -q
+    Checks whether a specified path exists in the EV already.
+    Path can't be empty/null
+    Example: piyon -q ""c:/a path to folder""
+
+    -fix
+    Noramlizes all the forward slashes (/) in paths with backslashes (\)
+    to make paths windows compatible.
+    Example: piyon -fix",
 
     # args
     "Args:

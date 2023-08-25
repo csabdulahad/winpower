@@ -1,6 +1,6 @@
 
 # WinPower Version
-$winVer = '5.0.0'
+$winVer = '5.1.0'
 
 $registryPath = 'HKCU:\Software\WinPower';
 
@@ -152,6 +152,10 @@ function Warn ([string] $msg) {
 function Highlight {
     param([string] $Msg = '');
     Write-Host -ForegroundColor DarkYellow $Msg;
+}
+
+function Success([string] $msg) {
+    Write-Host -ForegroundColor DarkGreen $msg;
 }
 
 function HmWrite {
