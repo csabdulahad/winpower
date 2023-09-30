@@ -25,10 +25,10 @@ try {
         def   = $env:origin
     });
 
-    $pm.cmd('q');
-    $pm.cmd('fix');
-    $pm.cmd('list');
-    $pm.cmd('r');
+    $pm.cmd(@{ cmd = 'q' });
+    $pm.cmd(@{ cmd = 'fix' });
+    $pm.cmd(@{ cmd = 'list' });
+    $pm.cmd(@{ cmd = 'r' });
 
     $pm.validate($args);
 

@@ -56,7 +56,7 @@ try {
 
     $pm = [Paramize]::new();
 
-    $pm.cmd('get');
+    $pm.cmd(@{ cmd = 'get' });
 
     $pm.add(@{
         lName = 'type'

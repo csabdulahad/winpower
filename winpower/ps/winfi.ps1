@@ -12,7 +12,7 @@ function queryPass([string]$profile) {
 try {
 
     $pm = [Paramize]::new();
-    $pm.cmd('list');
+    $pm.cmd(@{ cmd = 'list' });
     $pm.add(@{
        lName = 'profile'
        sName = 'p'

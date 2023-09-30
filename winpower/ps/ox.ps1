@@ -20,9 +20,9 @@ try {
         def   = $env:origin
     });
 
-    $pm.cmd('me');
-    $pm.cmd('d');
-    $pm.cmd('dl');
+    $pm.cmd(@{ cmd = 'me' });
+    $pm.cmd(@{ cmd = 'd' });
+    $pm.cmd(@{ cmd = 'dl' });
 
     $pm.validate($args);
 

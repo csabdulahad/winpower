@@ -263,7 +263,7 @@ function listCmd {
 try {
     $pm = [Paramize]::new();
 
-    $pm.cmd('list');
+    $pm.cmd(@{ cmd = 'list' });
 
     $pm.add(@{
         lName = 'command'

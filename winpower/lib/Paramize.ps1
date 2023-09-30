@@ -1,4 +1,3 @@
-
 <#
 # This calss can help validate command line param/arugment. It can
 # all a param to be optional or rquired. It can also perform empty
@@ -8,15 +7,18 @@
 #
 #       # param that is requried and value can't be empty
 #       $px.add(
-#           lName = 'path' # long name
-#           sName = 'p'   # short name
+#           lName = 'path'  # long name
+#           sName = 'p'     # short name
 #       );
 #
-#        # add special single cmd command like -i, -v
-#        $px.cmd('i');
+#       # add special single cmd command like -i, -v
+#       $px.cmd(@{
+#           cmd = 'i'                       # automatically adds extra '-'
+#           options = @()                   # [optional]
+#       });
 #
 #       # you can check it was hit or even can extract its argument
-#       $px.hitCmd('i');                    # automatically adds extra 'cls
+#       $px.hitCmd('i');
 #       $px.hitCmdArg('i');
 #
 #
@@ -24,9 +26,10 @@
 #       $px.add(
 #           lName       = 'path2'           # long name
 #           sName       = 'p2'              # short name
-#           def         = 'value'           # default value
-#           canEmpty    = 1                 # can be any value; falg is counted
-#       );
+#           def         = 'value'           # default value [optional]
+#           canEmpty    = 1                 # can be any value; only falg is counted [optional]
+#       	options		= ('options..')		# values allowed for the param [optional]
+# 		);
 #
 #       $pz.validate($arg);                 # can provide any array; default is $args variable
 #
@@ -36,7 +39,7 @@
 # Validated param value can be extracted using the following method:
 #       $pz.hitOrDef('path');               # returns either user provided value on hit; otherwise default one
 #                                           # full name must be used to fetch the value. '-' auto provided.
- #>
+#>
 
 class Paramize {
 
@@ -64,9 +67,8 @@ class Paramize {
     # list holds the parmaters which must be provided by the user
     [PSCustomObject] $_reqParam;
 
-
     # contains the special single command params like -i, -v etc
-    [string[]] $_cmdList;
+    [PSCustomObject] $_cmdList;
 
     # tracks which cmd was hit
     [string] $_cmdHit;
@@ -76,7 +78,7 @@ class Paramize {
         $this._paramVal = @{};
         $this._paramMeta = @{};
         $this._reqParam = New-Object System.Collections.ArrayList; # resizeable array list
-        $this._cmdList = @();
+        $this._cmdList = @{};
     }
 
     [void] disablePosCheck() {
@@ -117,9 +119,9 @@ class Paramize {
     }
 
     # add special single command param like -i, -v
-    [void] cmd([string] $cmd) {
-        if (-not $cmd.StartsWith('-')) { $cmd = "-$cmd"; }
-        $this._cmdList += $cmd;
+    [void] cmd([PSCustomObject] $obj) {
+        if (-not $obj.cmd.StartsWith('-')) { $obj.cmd = "-$($obj.cmd)"; }
+        $this._cmdList.$($obj.cmd) = $obj;
     }
 
     # returns whether any specific special listed cmd was found or not
@@ -140,6 +142,7 @@ class Paramize {
         return $null -ne $this._paramVal.$($key);
     }
 
+    # returns the value provided by the user for a param
     [object] hitVal([string] $key) {
         if (-not $this.hit($key)) { return $null; }
         return $this._paramVal.$($this._hasParam($key));
@@ -189,7 +192,7 @@ class Paramize {
         return $this._paramMeta.$($paramName).$($key);
     }
 
-     # for a param, calculate long name regadless of long/short name provided; removes confusions
+    # for a param, calculate long name regadless of long/short name provided; removes confusions
     [object] _hasParam([string] $param) {
         $param = if ($param.StartsWith('-')) { $param; } else { "-$param" }
         foreach ($i in $this._transTable.GetEnumerator()) {
@@ -198,6 +201,20 @@ class Paramize {
             }
         }
         return $null;
+    }
+
+    # for a param it tries to see if provided vlaue by the user is one of valid options
+    [void] _checkValidOption([string] $value, [string] $paramName) {
+        $options = $this._paramMeta.$paramName.options;
+
+        # no valid options were set
+        if ($null -eq $options) { return; }
+
+        if (-not $options.Contains($value)) {
+            $optionList = 'Allowed options are: "' + ($options -join '", ') + '"';
+            $msg =  "Invalid value for: $paramName`n$optionList";
+            Throw $msg;
+        }
     }
 
     # this method validates arguments
@@ -214,7 +231,17 @@ class Paramize {
             $this._argBuffer[$i] = $val;
 
             # check for cmd!
-            if ($this._cmdList.Contains($val)) {
+            $cmd = $this._cmdList.$val;
+            if ($null -ne $cmd) {
+                # get list of options defined if there is any & check the next value for it
+                $options = $cmd.options;
+                $hasOption = $null -ne $options -and $options.Length -gt 0;
+                if ($hasOption -and (-not $options.Contains($arg[$i+1]))) {
+                    $optionList = 'Allowed options are: "' + ($options -join '", ') + '"';
+                    $msg = "Invalid value for flag: $val`n$optionList";
+                    Throw $msg;
+                }
+
                 $this._cmdHit = $val;
                 return;
             }
@@ -267,6 +294,9 @@ class Paramize {
                 if (-not $this._keyInParamMeta('canEmpty', $param) -and $nextVal.Trim() -eq '') {
                     Throw "Value can't be empty for: " + $arg[$i];
                 }
+
+                # just before accepting this input, check if it is one of valids if configured
+                $this._checkValidOption($nextVal, $param);
 
                 $this._paramVal.$($param) = $nextVal;
             } else {

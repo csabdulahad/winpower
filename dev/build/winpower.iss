@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "WinPower"
-#define MyAppPublisher "Abdul Ahad"
+#define MyAppPublisher "RootData21"
 #define MyAppURL "https://abdulahad.net/winpower"
 
 [Setup]
@@ -29,6 +29,7 @@ SetupIconFile=C:\winpower_dev\dev\build\asset\winpower.ico
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
+UninstallDisplayIcon=C:\winpower_dev\dev\build\asset\winpower.ico
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"

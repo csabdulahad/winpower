@@ -16,8 +16,8 @@ try {
 
     $pm = [Paramize]::new();
     $pm.disablePosCheck();
-    $pm.cmd('v');
-    $pm.cmd('i');
+    $pm.cmd(@{ cmd = 'v' });
+    $pm.cmd(@{ cmd = 'i' });
     $pm.validate($args);
 
     # version command

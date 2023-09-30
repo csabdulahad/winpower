@@ -1,6 +1,6 @@
 
 # WinPower Version
-$winVer = '5.1.0'
+$winVer = '5.1.1'
 
 $registryPath = 'HKCU:\Software\WinPower';
 
